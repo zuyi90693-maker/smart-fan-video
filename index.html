@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智能风扇 · 演示视频</title>
+<style>
+  :root{
+    --bg:#0a0f1c; --card:#111a2e; --line:#25314f;
+    --txt:#eaf0ff; --muted:#93a2c9; --accent:#4d8dff; --accent2:#22c8a8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    color:var(--txt);
+    background:
+      radial-gradient(900px 520px at 8% -8%, rgba(77,141,255,.22), transparent 60%),
+      radial-gradient(760px 460px at 100% 4%, rgba(34,200,168,.14), transparent 58%),
+      var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    padding:26px 16px;
+  }
+  .wrap{width:100%;max-width:560px}
+  header{margin-bottom:14px}
+  h1{font-size:clamp(19px,3.2vw,26px);margin:0 0 8px;letter-spacing:.4px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    font-size:12px;color:var(--muted);border:1px solid var(--line);
+    border-radius:999px;padding:4px 10px;background:rgba(255,255,255,.03);
+  }
+  .card{
+    background:linear-gradient(180deg,var(--card),#0d1525);
+    border:1px solid var(--line);border-radius:18px;padding:12px;
+    box-shadow:0 22px 56px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  video{
+    display:block;width:100%;max-height:78vh;object-fit:contain;
+    background:#000;border-radius:12px;outline:none;
+  }
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .meta{font-size:13px;color:var(--muted);flex:1;min-width:150px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;
+    color:#08122b;text-decoration:none;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-radius:10px;padding:10px 15px;border:0;cursor:pointer;
+    transition:transform .15s ease, filter .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .btn.ghost{color:var(--txt);background:rgba(255,255,255,.05);border:1px solid var(--line)}
+  footer{margin-top:13px;font-size:12px;color:var(--muted);line-height:1.7;word-break:break-all}
+  code{
+    background:rgba(255,255,255,.07);padding:2px 6px;border-radius:6px;
+    font-family:Consolas,monospace;font-size:12px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>智能风扇 · 演示视频</h1>
+    <div class="chips">
+      <span class="chip">竖屏 544×960</span>
+      <span class="chip">H.264 · 30fps</span>
+      <span class="chip" id="dur">时长加载中…</span>
+    </div>
+  </header>
+
+  <div class="card">
+    <video id="player" controls playsinline preload="metadata"
+           poster="poster.jpg" src="role-ref.mp4">
+      你的浏览器不支持 HTML5 视频，请
+      <a href="role-ref.mp4">点此下载视频</a>。
+    </video>
+
+    <div class="bar">
+      <div class="meta">智能风扇项目演示 · 实拍</div>
+      <a class="btn" href="role-ref.mp4" download>下载原视频</a>
+      <a class="btn ghost" href="role-ref.mp4" target="_blank" rel="noopener">新窗口打开</a>
+    </div>
+  </div>
+
+  <footer>
+    视频直链（可直接发微信/QQ）：<code id="direct"></code><br>
+    手机、平板、电脑打开本页即可播放，无需登录、无需安装软件。
+  </footer>
+</div>
+
+<script>
+  const v = document.getElementById('player');
+  const fmt = s => {
+    if (!isFinite(s) || s <= 0) return '';
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  };
+  v.addEventListener('loadedmetadata', () => {
+    document.getElementById('dur').textContent = '时长 ' + fmt(v.duration);
+  });
+  document.getElementById('direct').textContent =
+    location.origin + location.pathname.replace(/[^/]*$/, '') + 'role-ref.mp4';
+</script>
+</body>
+</html>
